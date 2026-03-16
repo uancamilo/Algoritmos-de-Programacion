@@ -17,13 +17,6 @@ int main() {
         return 1;
     }
 
-    // Reserva un arreglo de punteros, uno por cada fila de la matriz.
-    int** matriz = new int*[filas];
-    for (int i = 0; i < filas; i++) {
-        // Para cada fila, reserva un arreglo de enteros con 'columnas' elementos.
-        matriz[i] = new int[columnas];
-    }
-
     srand(time(0));
 
     int cantidadPares = 0;
@@ -33,8 +26,7 @@ int main() {
     cout << "\nMatriz generada aleatoriamente (10 a 99):\n";
     for (int i = 0; i < filas; i++) {
         for (int j = 0; j < columnas; j++) {
-            matriz[i][j] = rand() % 90 + 10;
-            int valor = matriz[i][j];
+            int valor = rand() % 90 + 10;
 
             suma += valor;
             if (valor % 2 == 0) {
@@ -49,10 +41,8 @@ int main() {
     }
 
     int totalElementos = filas * columnas;
-    double porcentajePares =
-        static_cast<double>(cantidadPares) * 100.0 / totalElementos;
-    double porcentajeImpares =
-        static_cast<double>(cantidadImpares) * 100.0 / totalElementos;
+    double porcentajePares = static_cast<double>(cantidadPares) * 100.0 / totalElementos;
+    double porcentajeImpares = static_cast<double>(cantidadImpares) * 100.0 / totalElementos;
     double promedio = static_cast<double>(suma) / totalElementos;
 
     cout << fixed << setprecision(2);
@@ -62,11 +52,6 @@ int main() {
     cout << "Porcentaje de impares: " << porcentajeImpares << "%\n";
     cout << "Suma total: " << suma << '\n';
     cout << "Promedio: " << promedio << '\n';
-
-    for (int i = 0; i < filas; i++) {
-        delete[] matriz[i];
-    }
-    delete[] matriz;
 
     return 0;
 }
