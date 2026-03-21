@@ -2,6 +2,9 @@
 #include<iomanip>
 using namespace std;
 
+const string NO = "NO";
+const string SI = "SI";
+
 int main() {
 	cout << fixed << setprecision(2);
 
@@ -113,18 +116,18 @@ int main() {
 	int mayorProduccionMesesImparesTiendasPares = 0;
 	int filaMayorProduccionMesesImparesTiendasPares = 0;
 	int columnaMayorProduccionMesesImparesTiendasPares = 0;
-	bool existeMayorProduccionMesesImparesTiendasPares = false;
+	string existeMayorProduccionMesesImparesTiendasPares = NO;
 	for (int i = 0; i < 12; i++) {
 		if (i % 2 != 0) {
 			for (int j = 0; j < N; j++) {
-				if (j % 2 == 0) {
-					if (!existeMayorProduccionMesesImparesTiendasPares || PRODUCCION[i][j] > mayorProduccionMesesImparesTiendasPares) {
-						mayorProduccionMesesImparesTiendasPares = PRODUCCION[i][j];
-						filaMayorProduccionMesesImparesTiendasPares = i;
-						columnaMayorProduccionMesesImparesTiendasPares = j;
-						existeMayorProduccionMesesImparesTiendasPares = true;
+					if (j % 2 == 0) {
+							if (existeMayorProduccionMesesImparesTiendasPares == NO || PRODUCCION[i][j] > mayorProduccionMesesImparesTiendasPares) {
+							mayorProduccionMesesImparesTiendasPares = PRODUCCION[i][j];
+							filaMayorProduccionMesesImparesTiendasPares = i;
+							columnaMayorProduccionMesesImparesTiendasPares = j;
+							existeMayorProduccionMesesImparesTiendasPares = SI;
+						}
 					}
-				}
 			}
 		}
 	}
@@ -133,15 +136,15 @@ int main() {
 	int menorProduccionTermineEn10 = 0;
 	int filaMenorProduccionTermineEn10 = 0;
 	int columnaMenorProduccionTermineEn10 = 0;
-	bool existeMenorProduccionTermineEn10 = false;
+	string existeMenorProduccionTermineEn10 = NO;
 	for (int i = 0; i < 12; i++) {
 		for (int j = 0; j < N; j++) {
 			if (PRODUCCION[i][j] % 100 == 10) {
-				if (!existeMenorProduccionTermineEn10 || PRODUCCION[i][j] < menorProduccionTermineEn10) {
+					if (existeMenorProduccionTermineEn10 == NO || PRODUCCION[i][j] < menorProduccionTermineEn10) {
 					menorProduccionTermineEn10 = PRODUCCION[i][j];
 					filaMenorProduccionTermineEn10 = i;
 					columnaMenorProduccionTermineEn10 = j;
-					existeMenorProduccionTermineEn10 = true;
+					existeMenorProduccionTermineEn10 = SI;
 				}
 			}
 		}
@@ -161,23 +164,23 @@ int main() {
 		}
 	}
 
-	long long productoMayorMenorProduccion = mayorProduccion * 1LL * menorProduccion;
+	int productoMayorMenorProduccion = mayorProduccion * menorProduccion;
 	cout << "\n9. El producto entre la mayor: " << mayorProduccion << " y la menor: " << menorProduccion << " produccion en toneladas: " << productoMayorMenorProduccion << "." << endl;
 
 	int produccionBuscada;
 	cout << "Ingrese la produccion a buscar: ";
 	cin >> produccionBuscada;
 
-	bool existeProduccionBuscada = false;
+	string existeProduccionBuscada = NO;
 	for (int i = 0; i < 12; i++) {
 		for (int j = 0; j < N; j++) {
 			if (PRODUCCION[i][j] == produccionBuscada) {
 				cout << "10. La produccion " << produccionBuscada << " SI existe en las coordenadas: [" << i << "][" << j << "]." << endl;
-				existeProduccionBuscada = true;
+				existeProduccionBuscada = SI;
 			}
 		}
 	}
-	if (!existeProduccionBuscada) {
+	if (existeProduccionBuscada == NO) {
 		cout << "10. La produccion " << produccionBuscada << " NO existe en la matriz." << endl;
 	}
 
@@ -224,39 +227,6 @@ int main() {
 		cout << "\n12. NO se realizo mayor produccion en el tercer trimestre: " << produccionTercerTrimestre << " que en el cuarto trimestre del anio: " << produccionCuartoTrimestre << "." << endl;
 	}
 
-	bool existeMultiploCinco = false;
-	int multiploCinco = 0;
-	int filaMultiploCinco = 0;
-	int columnaMultiploCinco = 0;
-	for (int i = 0; i < 12 && !existeMultiploCinco; i++) {
-		if (i == 2 || i == 6 || i == 10) {
-			for (int j = 0; j < N && !existeMultiploCinco; j++) {
-				if (j % 2 != 0 && PRODUCCION[i][j] % 5 == 0) {
-					multiploCinco = PRODUCCION[i][j];
-					filaMultiploCinco = i;
-					columnaMultiploCinco = j;
-					existeMultiploCinco = true;
-				}
-			}
-		}
-	}
-
-	if (existeMultiploCinco) {
-		cout << "\n13. SI existe una produccion multiplo de 5 en los meses marzo, julio y noviembre en las tiendas impares: " << multiploCinco << ". Coordenadas: [" << filaMultiploCinco << "][" << columnaMultiploCinco << "]." << endl;
-	} else {
-		cout << "\n13. NO existe una produccion multiplo de 5 en los meses marzo, julio y noviembre en las tiendas impares." << endl;
-	}
-
-	int produccionDiagonalPrincipal = 0;
-	int produccionDiagonalSecundaria = 0;
-	for (int i = 0; i < limiteCuadrada; i++) {
-		produccionDiagonalPrincipal += PRODUCCION[i][i];
-		produccionDiagonalSecundaria += PRODUCCION[i][N - 1 - i];
-	}
-
-	double porcentajeProduccionDiagonalPrincipal = produccionDiagonalPrincipal * 100.0 / produccionTotal;
-	double porcentajeProduccionDiagonalSecundaria = produccionDiagonalSecundaria * 100.0 / produccionTotal;
-	cout << "\n14. Porcentaje que representan las producciones ubicadas en la diagonal principal: " << porcentajeProduccionDiagonalPrincipal << "% y el porcentaje que representan las producciones ubicadas en la diagonal secundaria: " << porcentajeProduccionDiagonalSecundaria << "%." << endl;
-
+	
 	return 0;
 }
